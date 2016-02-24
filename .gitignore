@@ -1,0 +1,7 @@
+.venv
+*.pyc
+.idea
+*.sw?
+*.egg
+*~
+niuker.egg-info

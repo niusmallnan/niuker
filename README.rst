@@ -25,7 +25,7 @@ pull from alauda
 
 # make some tests
 
-        $ niuker pull nginx alpine nginx
+        $ niuker pull nginx alpine ubuntu
 
 clean containers
 ============================

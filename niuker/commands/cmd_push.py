@@ -21,18 +21,23 @@ from sh import docker
 
 @click.command('push', short_help='push images to private registry')
 @click.argument('images', nargs=-1)
+@click.option('--all', '-a', is_flag=True, help='push all local images')
 @click.option('--private_registry', envvar='NIUKER_PRIVATE_REGISTRY',
               metavar='private_registry',
               help='set the private registry domain')
 @pass_context
-def cli(ctx, images, private_registry):
+def cli(ctx, images, all, private_registry):
     """push images to private registry
 
     images could be a list param
     """
-    ctx.log('push %s to %s' % (images, private_registry))
     if not private_registry:
         return
+    if all:
+        images = docker.images('--format','{{.Repository}}:{{.Tag}}')
+        images = images.split()
+        print(images)
+    ctx.log('push %s to %s' % (images, private_registry))
     for image in images:
         new_image = '%s/%s' % (private_registry, image)
         docker.tag(image, new_image)

@@ -29,12 +29,14 @@ def parse_alauda_image(image, private_registry):
     return pulled_image
 
 def parse_neunn_image(image, private_registry):
-    pass
+    return '%s/%s' % (private_registry, image)
 
 
 def parse_image(image, private_registry):
     if private_registry == ALAUDA_REGISTRY:
         return parse_alauda_image(image, private_registry)
+    if private_registry == NEUNN_REGISTRY:
+        return parse_neunn_image(image, private_registry)
     return image
 
 

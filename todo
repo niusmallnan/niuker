@@ -1,0 +1,5 @@
+# 查询各种registry中是否有对应的image
+niuker search <image>
+
+# 拉取某个rancher catalog依赖的镜像
+niuker rancher-pull <catalog:version>

@@ -17,15 +17,33 @@ Docker & Rancher 命令行辅助工具
 
         $ cd niuker && python setup.py develop
 
-pull from alauda
+pull from neunn or alauda
 ============================
-# switch to the alauda registry
+# switch to the alauda/neunn registry
 
         $ source tools/alauda-rc.sh
+
+                or
+
+        $ source tools/neunn-rc.sh
 
 # make some tests
 
         $ niuker pull nginx alpine ubuntu
+
+push images to neunn
+============================
+# switch to the neunn registry
+
+        $ source tools/neunn-rc.sh
+
+# push all local images
+
+        $ niuker push -a
+
+# push images list
+
+        $ niuker push ubuntu nginx:1.4.3
 
 clean containers
 ============================

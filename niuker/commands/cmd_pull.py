@@ -15,11 +15,10 @@
 from __future__ import print_function
 
 import click
+from niuker.config import NEUNN_REGISTRY, ALAUDA_REGISTRY
 from niuker.cli import pass_context
 from sh import docker
 
-NEUNN_REGISTRY = 'index.neunn.com'
-ALAUDA_REGISTRY = 'index.alauda.cn'
 
 def parse_alauda_image(image, private_registry):
     if image.find('/') > 0:

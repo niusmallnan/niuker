@@ -14,3 +14,10 @@
 #    under the License.
 NEUNN_REGISTRY = 'index.neunn.com'
 ALAUDA_REGISTRY = 'index.alauda.cn'
+TENX_REGISTRY = 'index.tenxcloud.com'
+
+REGISTRY = {NEUNN_REGISTRY: '',
+            ALAUDA_REGISTRY: 'library',
+            TENX_REGISTRY: 'docker_library',
+            }
+

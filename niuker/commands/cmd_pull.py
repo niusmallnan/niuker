@@ -15,28 +15,21 @@
 from __future__ import print_function
 
 import click
-from niuker.config import NEUNN_REGISTRY, ALAUDA_REGISTRY
+from niuker.config import REGISTRY
 from niuker.cli import pass_context
 from sh import docker
 
 
-def parse_alauda_image(image, private_registry):
+def parse_image(image, private_registry):
     if image.find('/') > 0:
         pulled_image = '%s/%s' % (private_registry, image)
     else:
-        pulled_image = '%s/library/%s' % (private_registry, image)
+        pulled_image = '%s/%s/%s' % (private_registry,
+                                     REGISTRY[private_registry],
+                                     image)
+    # fix official repo in index.neunn.com
+    pulled_image = pulled_image.replace('//', '/')
     return pulled_image
-
-def parse_neunn_image(image, private_registry):
-    return '%s/%s' % (private_registry, image)
-
-
-def parse_image(image, private_registry):
-    if private_registry == ALAUDA_REGISTRY:
-        return parse_alauda_image(image, private_registry)
-    if private_registry == NEUNN_REGISTRY:
-        return parse_neunn_image(image, private_registry)
-    return image
 
 
 @click.command('pull', short_help='pull images from private registry')
@@ -52,12 +45,11 @@ def cli(ctx, images, private_registry):
     """
     ctx.log('pull %s from %s' % (images, private_registry))
     for image in images:
-        image = parse_image(image, private_registry)
-        ctx.log('RUN: docker pull %s' % image)
-        docker.pull(image)
+        pulled_image = parse_image(image, private_registry)
+        ctx.log('RUN: docker pull %s' % pulled_image)
+        docker.pull(pulled_image)
         if private_registry:
-            new_image = image.replace(private_registry, '')[1:]
-            docker.tag(image, new_image)
-            docker.rmi(image)
+            docker.tag(pulled_image, image)
+            docker.rmi(pulled_image)
 
     print(docker.images())

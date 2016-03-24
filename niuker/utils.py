@@ -12,6 +12,30 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import os
+
+try:
+    from sh import docker_machine
+except ImportError:
+    print('docker-machine needed')
+
+
+def get_machine_hosts(hosts, exclude):
+    if hosts:
+        return list(hosts)
+    all_hosts = docker_machine.ls('-q').split()
+    if not exclude:
+        return list(all_hosts)
+    return list(set(all_hosts) ^ set(exclude))
+
+
+def set_host_environ(host):
+    for temp in docker_machine.env(host).split():
+        if temp.startswith('DOCKER'):
+            key =temp.split('=')[0]
+            value = temp.split('=')[1].replace('"', '')
+            os.environ[key] = value
+
 
 def env(*vars, **kwargs):
     """Search for the first defined of possibly many env vars

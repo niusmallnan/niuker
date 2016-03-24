@@ -15,48 +15,46 @@
 from __future__ import print_function
 
 import click
-import sh
-from niuker.cli import pass_context
-from niuker.commands import cmd_pull
-from niuker.utils import get_machine_hosts, set_host_environ
 from sh import docker
-from sh import niuker
 from sh import sleep
+from niuker.cli import pass_context
+from niuker.utils import get_machine_hosts, set_host_environ
 
 
-def pull_images(ctx, hosts, images):
-    for host in hosts:
+def sync_images(ctx, docker_hosts, image_files):
+    for host in docker_hosts:
         set_host_environ(host)
-        try:
-            niuker.pull(images)
-            ctx.log('pull %s on %s' % (images, host))
-        except:
-            ctx.log('failed pull on %s' % host)
+        for f in image_files:
+            try:
+                docker.load('-i', f)
+                ctx.log('load %s on %s' % (f, host))
+            except:
+                ctx.log('failed load %s on %s' % (f, host))
 
 
-@click.command('machine-pull', short_help='pull images on docker machine env')
-@click.argument('images', nargs=-1)
+@click.command('machine-sync', short_help='sync images to docker machine hosts')
+@click.argument('image_files', nargs=-1, type=click.Path(exists=True))
 @click.option('--hosts', '-h', multiple=True, metavar='specific_host',
-              help='pull images on specific hosts')
+              help='sync images to specific hosts')
 @click.option('--exclude', '-e', multiple=True, metavar='exclude_host',
-              help='exclude some hosts')
+              help='sync images exclude some hosts')
 @pass_context
-def cli(ctx, images, hosts, exclude):
-    """pull images on docker machine env
+def cli(ctx, image_files, hosts, exclude):
+    """sync images to docker machine hosts
 
     for example:
 
     \b
-        #default pull on all hosts
-        niuker machine-pull ubuntu alpine
+        #sync all hosts
+        niuker machine-sync ubuntu.tar alpine.tar
     \b
-        #pull on specific hosts
-        niuker machine-pull ubuntu alpine -h xxxx -h yyyyy
+        #sync to specific hosts
+        niuker machine-sync ubuntu.tar alpine.tar -h xxxx -h yyyyy
     \b
-        #pull exclude some hosts
-        niuker machine-pull ubuntu alpine -e xxxx -e yyyyy
+        #sync exclude some hosts
+        niuker machine-sync ubuntu.tar alpine.tar -e xxxx -e yyyyy
     """
-    if not images:
+    if not image_files:
         return
     if hosts and exclude:
         ctx.log('never use hosts and exclude together')
@@ -65,7 +63,9 @@ def cli(ctx, images, hosts, exclude):
     ctx.log('Hosts:\n%s' % '\n'.join(docker_hosts))
     ctx.log('sleep 10s waiting for you')
     sleep(10)
-    pull_images(ctx, docker_hosts, images)
+    sync_images(ctx, docker_hosts, image_files)
 
 
-__command_name__ = 'machine-pull'
+
+__command_name__ = 'machine-sync'
+

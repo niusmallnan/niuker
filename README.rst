@@ -1,7 +1,7 @@
 ==================================
 Docker & Rancher 命令行辅助工具
 ==================================
-
+Support docker engine v1.10+
 
 安装
 ============================
@@ -64,6 +64,18 @@ clean images
 # clean all images
 
         $ niuker clean images -a -f
+
+
+docker-machine
+============================
+# docker-machine pull images
+
+    $ niuker machine-pull --help
+
+# docker-machine sync images
+
+    $ niuker machine-sync --help
+
 
 新手教学
 ============================

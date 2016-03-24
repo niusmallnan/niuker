@@ -1,2 +1,2 @@
 sh
-click
+click<=6.3

@@ -46,12 +46,21 @@ cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),
 
 class NiukerCLI(click.MultiCommand):
 
+    def _import_mod(self, module):
+        return __import__(module, None, None, ['cli'])
+
     def list_commands(self, ctx):
         rv = []
         for filename in os.listdir(cmd_folder):
             if filename.endswith('.py') and \
                filename.startswith('cmd_'):
-                rv.append(filename[4:-3])
+                temp = filename[4:-3]
+                mod = self._import_mod('niuker.commands.cmd_'+temp)
+                try:
+                    command_name = mod.__command_name__
+                except AttributeError:
+                    command_name = temp
+                rv.append(command_name)
         rv.sort()
         return rv
 
@@ -59,8 +68,9 @@ class NiukerCLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            mod = __import__('niuker.commands.cmd_' + name,
-                             None, None, ['cli'])
+            name = name.replace('-', '_')
+            mod = self._import_mod('niuker.commands.cmd_' + name)
+
         except ImportError:
             return
         return mod.cli

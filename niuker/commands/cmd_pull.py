@@ -47,9 +47,12 @@ def cli(ctx, images, private_registry):
     for image in images:
         pulled_image = parse_image(image, private_registry)
         ctx.log('RUN: docker pull %s' % pulled_image)
-        docker.pull(pulled_image)
-        if private_registry:
-            docker.tag(pulled_image, image)
-            docker.rmi(pulled_image)
+        try:
+            docker.pull(pulled_image)
+            if private_registry:
+                docker.tag(pulled_image, image)
+                docker.rmi(pulled_image)
+        except:
+            ctx.log('failed pull %s' % image)
 
     print(docker.images())

@@ -7,63 +7,63 @@ Support docker engine v1.10+
 ============================
 # install setuptools first. for example.
 
-        $ easy_install setuptools
+   $ easy_install setuptools
 
 # git clone this repo
 
-        $ git clone xxxx/niuker.git
+   $ git clone xxxx/niuker.git
 
 # install this tool
 
-        $ cd niuker && python setup.py develop
+   $ cd niuker && python setup.py develop
 
 pull from neunn or alauda
 ============================
 # switch to the alauda/neunn registry
 
-        $ source tools/alauda-rc.sh
+   $ source tools/alauda-rc.sh
 
-                or
+       or
 
-        $ source tools/neunn-rc.sh
+   $ source tools/neunn-rc.sh
 
 # make some tests
 
-        $ niuker pull nginx alpine ubuntu
+   $ niuker pull nginx alpine ubuntu
 
 push images to neunn
 ============================
 # switch to the neunn registry
 
-        $ source tools/neunn-rc.sh
+   $ source tools/neunn-rc.sh
 
 # push all local images
 
-        $ niuker push -a
+   $ niuker push -a
 
 # push images list
 
-        $ niuker push ubuntu nginx:1.4.3
+   $ niuker push ubuntu nginx:1.4.3
 
 clean containers
 ============================
 #clean stoped containers
 
-        $ niuker clean containers
+   $ niuker clean containers
 
 #clean all containers
 
-        $ niuker clean containers -a -f
+   $ niuker clean containers -a -f
 
 clean images
 ============================
 # clean untag images
 
-        $ niuker clean images
+   $ niuker clean images
 
 # clean all images
 
-        $ niuker clean images -a -f
+   $ niuker clean images -a -f
 
 
 docker-machine
@@ -81,5 +81,5 @@ docker-machine
 ============================
 # see the cmd help
 
-        $ niuker doc
+    $ niuker doc
 

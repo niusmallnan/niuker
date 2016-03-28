@@ -28,8 +28,8 @@ def pull_images(ctx, hosts, images):
     for host in hosts:
         set_host_environ(host)
         try:
+            ctx.log('pulling %s on %s' % (images, host))
             niuker.pull(images)
-            ctx.log('pull %s on %s' % (images, host))
         except:
             ctx.log('failed pull on %s' % host)
 

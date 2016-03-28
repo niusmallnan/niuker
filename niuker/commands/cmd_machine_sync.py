@@ -26,8 +26,8 @@ def sync_images(ctx, docker_hosts, image_files):
         set_host_environ(host)
         for f in image_files:
             try:
+                ctx.log('loading %s on %s' % (f, host))
                 docker.load('-i', f)
-                ctx.log('load %s on %s' % (f, host))
             except:
                 ctx.log('failed load %s on %s' % (f, host))
 

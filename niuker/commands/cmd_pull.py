@@ -21,6 +21,8 @@ from sh import docker
 
 
 def parse_image(image, private_registry):
+    if not private_registry:
+        return image
     if image.find('/') > 0:
         pulled_image = '%s/%s' % (private_registry, image)
     else:

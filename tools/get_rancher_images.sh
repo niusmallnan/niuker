@@ -5,6 +5,8 @@
 #
 # Distributed under terms of the MIT license.
 #
+# crontab: 0 17 * * * cd /opt/ && sh get_rancher_images.sh && /usr/local/bin/niuker pull $(cat images.txt) > /tmp/sync_mirror_history.log
+#
 set -e
 
 if [ -f "$(dirname $0)/images.txt" ]; then

@@ -23,4 +23,4 @@ fi
 
 git grep "image:" | grep yml | awk -F ' ' '{print $3}' > _images.txt
 sed -i 's/"//g' _images.txt
-sort _images.txt | uniq > $(dirname $0)/images.txt && rm -f _images.txt
+sort _images.txt | uniq > $(dirname $0)/../images.txt && rm -f _images.txt

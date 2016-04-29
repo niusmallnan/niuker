@@ -31,16 +31,18 @@ def cli(ctx, images, all, private_registry):
 
     images could be a list param
     """
-    if not private_registry:
-        return
     if all:
         images = docker.images('--format','{{.Repository}}:{{.Tag}}')
         images = images.split()
         print(images)
-    ctx.log('push %s to %s' % (images, private_registry))
+    ctx.log('push %s to %s' % (images, private_registry or 'DockerHub'))
     for image in images:
-        new_image = '%s/%s' % (private_registry, image)
-        docker.tag(image, new_image)
-        ctx.log('RUN: docker push %s' % new_image)
-        print(docker.push(new_image))
-        docker.rmi(new_image)
+        ctx.log('RUN: docker push %s' % image)
+        if private_registry:
+            new_image = '%s/%s' % (private_registry, image)
+            docker.tag(image, new_image)
+            print(docker.push(new_image))
+            docker.rmi(new_image)
+        else:
+            print(docker.push(image))
+

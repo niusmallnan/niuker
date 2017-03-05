@@ -64,8 +64,8 @@ def remove_images(ctx, images, force=False):
 def images(ctx, force, all):
     """clean docker images which has no tag"""
     ctx.log('clean untag images')
-    untag_images = docker.images('--format','{{.Repository}}:{{.Tag}}',
-                                 "--filter='dangling=true'", '-q').split()
+    untag_images = docker.images('--format','{{.ID}}',
+                                 "--filter=dangling=true", '-q').split()
     remove_images(ctx, untag_images, force)
     if all:
         ctx.log('clean all images')

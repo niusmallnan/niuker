@@ -23,7 +23,8 @@ def cli(ctx, image_file):
     """
     if not image_file:
         return
-    for pull_image in image_file.readlines(image_file):
+    for pull_image in image_file.readline():
+        pull_image = pull_image.rstrip('\n')
         if len(pull_image) == 0:
             continue
         docker.pull(pull_image)
